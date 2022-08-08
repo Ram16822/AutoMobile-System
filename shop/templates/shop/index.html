@@ -1,0 +1,127 @@
+{% extends 'shop/layout.html' %}
+
+{% block content %}
+
+<!--carousel-->
+    <div id="carouselExampleCaptions" class="carousel slide carousel-fade" data-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item main-carousel-item position-relative active">
+                <img src="media/bicikleta-cover.jpg" class="d-block w-100" alt="cover-1">
+                <div class="carousel-caption d-none d-md-block w-100 h-100">
+                    <div class="text-center font-italic caption-text w-100 py-4">
+                        <h1 class="display-4">AMS</h1>
+                        <h3 class="font-weight-bolder">Experience the world with new spirit</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item main-carousel-item position-relative">
+                <img src="https://images.unsplash.com/photo-1542245796-946699811998?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80" class="d-block w-100" alt="cover-2">
+                <div class="carousel-caption d-none d-md-block w-100 h-100">
+                    <div class="text-center font-italic caption-text w-100 py-4">
+                        <h1 class="display-4">AMS</h1>
+                        <h3 class="font-weight-bolder">Shopping made easy</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item main-carousel-item position-relative">
+                <img src="https://images.unsplash.com/photo-1485965120184-e220f721d03e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80" class="d-block w-100" alt="cover-2">
+                <div class="carousel-caption d-none d-md-block w-100 h-100">
+                    <div class="text-center font-italic caption-text w-100 py-4">
+                        <h1 class="display-4">AMS</h1>
+                        <h3 class="font-weight-bolder">a whole new catalogue of vehicles</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item main-carousel-item position-relative">
+                <img src="https://images.unsplash.com/photo-1576435728678-68d0fbf94e91?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1503&q=80" class="d-block w-100" alt="cover-2">
+                <div class="carousel-caption d-none d-md-block w-100 h-100">
+                    <div class="text-center font-italic caption-text w-100 py-4">
+                        <h1 class="display-4">AMS</h1>
+                        <h3 class="font-weight-bolder">powerful and safe options to choose</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
+            <span class="fas fa-caret-left p-0 pr-4 text-light" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-slide="next">
+            <span class="fas fa-caret-right p-0 pl-4 text-light" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+
+
+        <div class="w-100 search-block">
+            <div class="container">
+                <div class="col-md-7 m-auto">
+                  <form method="POST">
+                    <div class="input-group mb-3 shadow">
+                      {% csrf_token %}
+                          {{form.search}}
+{#                      <input type="text" class="form-control input-search-text" placeholder="BMX, Shimano...">#}
+                      <div class="input-group-append">
+                          <button class="btn btn-success btn-search" type="submit"><i class="fas fa-search fa-lg"></i></button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--end carousel-->
+
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <h2 class="font-weight-bold mb-3">VEHICLE categories</h2>
+        </div>
+    </div>
+    <div class="row row-cols-1 row-cols-lg-4 row-cols-md-3">
+        {%for bike in kid_bikes%}
+            <div class="col mb-4 bike">
+                <a href="/bike/{{ bike.name }}" class="text-decoration-none">
+                    <div class="card h-100 shadow-sm">
+                        <img src="{{bike.image.url}}" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">{{bike.name}}</h5>
+                            <p class="card-text text-truncate">{{bike.description}}</p>
+                            <div class="d-flex align-items-center justify-content-between mt-1">
+                                <span class="product-price">{{bike.price}} &euro;</span>
+                                <small class="text-muted">Madhesia :{{bike.size}}</small>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        {% endfor%}
+    </div>
+
+
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <h2 class="font-weight-bold mb-3">BMX</h2>
+        </div>
+    </div>
+    <div class="row row-cols-1 row-cols-lg-4 row-cols-md-3">
+        {%for bike in BMX_bikes%}
+            <div class="col mb-4 bike">
+                <a href="/bike/{{ bike.name }}" class="text-decoration-none">
+                    <div class="card h-100 shadow-sm">
+                        <img src="{{bike.image.url}}" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">{{bike.name}}</h5>
+                            <p class="card-text text-truncate">{{bike.description}}</p>
+                            <div class="d-flex align-items-center justify-content-between mt-1">
+                                <span class="product-price">{{bike.price}} &euro;</span>
+                                <small class="text-muted">Madhesia :{{bike.size}}</small>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        {% endfor%}
+    </div>
+</div>
+
+{% endblock %}

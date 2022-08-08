@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
+
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'shop/home.css' %}">
+{% block extrahead %}{% endblock %}
+ 
+ {% load myapptags %}
+  <title>Bike shop</title>
+  <meta name="description" content="Mary's simple recipe for maple bacon donuts makes a sticky, sweet treat with just a hint of salt that you'll keep coming back for.">
+</head>
+
+<body>
+<!--navbar-->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top pt-4 pr-4" id="MainNavbar">
+        <a href="/" class="navbar-brand brand-home">BIKE SHOP</a>
+        <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">    
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Categories
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                      <a class="dropdown-item" href="/category/bmx">BMX</a>
+                      <a class="dropdown-item" href="/category/mtb">MTB</a>
+                      <a class="dropdown-item" href="/category/shimano">Shimano</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/contact">Contact us</a>
+                </li>
+
+                {% if user.is_authenticated %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      {{ user.username }}
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown2">
+                      <a class="dropdown-item" href="{% url 'admin:index' %}">Dashboard</a>
+                      <a class="dropdown-item" href="{% url 'admin:logout' %}">Log out</a>
+                    </div>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link btn btn-outline-success my-2 my-sm-0 py-1 login" href="{% url 'admin:login' %}">Log in</a>
+                </li>
+                {% endif %}
+
+                <!-- Cart -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/shopcart" >
+                        <i class="fa fa-shopping-cart"></i>
+                        {% load myapptags %}
+                        {% shopcartcount  uuid as count %}
+                        <span class="qty">{{ count  }}</span>
+                    </a>
+
+                </li>
+                <!-- /Cart -->
+{#                <li class="nav-item">#}
+{#                    <form method="POST">#}
+{#                       {% csrf_token %}#}
+{#                        <div class="search">#}
+{#                            {{form.search}}#}
+{#                            <button type="submit" class="searchButton">#}
+{#                                <i class="fa fa-search"></i>#}
+{#                            </button>#}
+{#                        </div>#}
+{#                   </form>#}
+{#                </li>#}
+            </ul>
+        </div>
+    </nav>
+    <!--end navbar-->
+
+        {% block content %}
+        {% endblock %}
+
+    <!-- FOOTER -->
+      <footer class="footer shadow-sm bg-light">
+          <div class="container py-3">
+              <div class="row">
+                <div class="col-lg-6 text-center text-lg-left" style="line-height: 32px;">
+                  <ul class="list-inline mb-0">
+                    <li class="list-inline-item">
+                      <a href="#">About</a>
+                    </li>
+                    <li class="list-inline-item">&sdot;</li>
+                    <li class="list-inline-item">
+                      <a href="/contact">Contact</a>
+                    </li>
+                    <li class="list-inline-item">&sdot;</li>
+                    <li class="list-inline-item">
+                      <a href="#">Terms of Use</a>
+                    </li>
+                    <li class="list-inline-item">&sdot;</li>
+                    <li class="list-inline-item">
+                      <a href="#">Privacy Policy</a>
+                    </li>
+                  </ul>
+                </div>
+                  <div class="col-lg-6 text-center text-lg-right">
+                      <ul class="list-inline mb-0">
+                        <li class="list-inline-item mr-3">
+                          <a href="#">
+                            <i class="fab fa-facebook fa-2x fa-fw"></i>
+                          </a>
+                        </li>
+                        <li class="list-inline-item mr-3">
+                          <a href="#">
+                            <i class="fab fa-twitter-square fa-2x fa-fw"></i>
+                          </a>
+                        </li>
+                        <li class="list-inline-item">
+                          <a href="#">
+                            <i class="fab fa-instagram fa-2x fa-fw"></i>
+                          </a>
+                        </li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+          <p class="bg-white text-muted small text-center py-2 mb-0">&copy; 2020 Bike Shop, Inc. All Rights Reserved.</p>
+      </footer>
+
+{% block scripts %}
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="{% static 'shop/js/main.js' %}"></script>
+{% endblock %}
+</body>
+
+</html>

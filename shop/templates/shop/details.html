@@ -1,0 +1,140 @@
+{% extends 'shop/layout.html' %}
+
+{% load static %}
+{% block extrahead  %}
+    <link rel="stylesheet" href="{% static 'shop/fix_navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'shop/libraries/swiper/swiper-bundle.min.css' %}">
+    <style>
+      .swiper-slide {
+        text-align: center;
+        font-size: 18px;
+      }
+      .swiper-button-white {
+          text-shadow: 0 0 #000000;
+      }
+      .swiper-pagination-bullet {
+          border: 1px solid rgba(0, 0, 0, .2);
+      }
+      /*loader issue*/
+      .swiper-slide {
+          min-height: 500px;
+      }
+      @media (max-width: 991px) {
+          .swiper-slide {
+              min-height: 300px;
+          }
+      }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5 pt-4">
+    {% if messages %}
+    <div class="row">
+        <div class="col-md-12">
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags }}" role="alert">{{ message }}</div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="row align-items-center">
+        <div class="col-md-12">
+            <!-- Breadcrumbs -->
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb bg-transparent pl-0 mb-0">
+                <li class="breadcrumb-item"><a href="/search?size={{ bike.size }}">Madhesia:{{bike.size}}</a></li>
+                <li class="breadcrumb-item"><a href="/category/{{ bike.bike_categories }}">{{ bike.bike_categories }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ bike.name }}</li>
+              </ol>
+            </nav>
+        </div>
+        <div class="col-md-5 order-md-2">
+            <h1 class="display-4 text-capitalize">{{bike.name}} <span class="badge badge-secondary">{{bike.price}} &euro;</span></h1>
+            <small class="text-muted">Size :{{bike.size}}</small>
+            <p>
+                <!-- short description -->
+                {{bike.description}},
+                Low Maintenance: High quality components ensure that the bike is very low maintenance
+                Design:this bike offers a fresh look with the stylish design.
+                Safety: Lifelong bikes are Ergonomically designed that are easy to balance and handle. Disc brakes with high quality brake pads provide additional safety
+                HIGH QUALITY LONG LASTING PRODUCT
+            </p>
+            <div class="row">
+                <div class="col-md-12">
+                    <form action="/addtoshopcart/{{ bike.id }}" method="post" class="form-inline">
+                         {% csrf_token %}
+                          <div id="SelectedProduct">
+                              <p><strong>Availability:</strong> {% if bike.amount > 0  %} In Stock {% else %} Out of Stock {% endif %}</p>
+                              <div class="qty-input">
+                                  <span class="text-uppercase">QTY: </span>
+                                  <input class="form-control" name="quantity" type="number" value="1" min="1" max="{{ bike.amount }}">
+                                  <button type="submit" {% if bike.amount < 1  %} disabled {% endif %} class="btn btn-success">
+                                    <i class="fa fa-shopping-cart"></i> Add to Cart
+                                </button>
+                            </div>
+                          </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-7 order-md-1">
+            <!-- Swiper -->
+            <div class="swiper-container">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                  <!-- Required swiper-lazy class and image source specified in data-src attribute -->
+                  <img src="{{bike.image.url}}" class="shadow-sm bike-img swiper-lazy" alt="{{bike.name}}">
+                  <!-- Preloader image -->
+                  <div class="swiper-lazy-preloader swiper-lazy-preloader-black"></div>
+                </div>
+                {% for image_obj in  images %}
+                <div class="swiper-slide">
+                  <img data-src="{{image_obj.image.url}}" class="swiper-lazy bike-img"/>
+                  <div class="swiper-lazy-preloader swiper-lazy-preloader-black"></div>
+                </div>
+               {% endfor %}
+              </div>
+              <!-- Add Pagination -->
+              <div class="swiper-pagination swiper-pagination-white"></div>
+              <!-- Navigation -->
+              <div class="swiper-button-next swiper-button-white"></div>
+              <div class="swiper-button-prev swiper-button-white"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <!-- full description -->
+            <div class="full-description">
+                {{ bike.full_description | safe}}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static 'shop/libraries/swiper/swiper-bundle.min.js' %}"></script>
+    <!-- Initialize Swiper -->
+    <script>
+      const swiper = new Swiper('.swiper-container', {
+        // Enable lazy loading
+        lazy: true,
+        zoom: true,
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+        },
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+      });
+    </script>
+{% endblock %}
