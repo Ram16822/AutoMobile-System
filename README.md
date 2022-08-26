@@ -16,9 +16,6 @@ For running
 
 python manage.py runserver
 
-Dashboard
-https://bike-shop-django.herokuapp.com/admin
-
 user:admin
 
 password:admin
